@@ -14,3 +14,6 @@
 
 ## Tasks
 1. Web Application
+
+
+2. Push the app to docker registry
