@@ -92,10 +92,109 @@ minikube start
 ```
 
 8. Create a deployment.yaml file
+
 [deployment.yaml](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/Deployment/deployment.yaml)
 
 
-9. Starts
+9. Starts Kubernetes (local without ArgoCD)
 
+```sh
+# Start minikube if not started yet
+minikube start
+
+kubectl apply -f deployment.yaml
+kubectl get deployments
+kubectl get services
+
+kubectl get pods
+kubectl get nodes
+kubectl get all
+
+minikube service streamlit-app-service --url
+kubectl get nodes -o wide
+minikube ip
+
+minikube stop
+minikube delete
+
+# Port Forwarding use the Docker Port, this will work in codespace
+# kubectl port-forward deployment/streamlit-app 8501:8501
+
+# Port Forwarding use the Docker Port, this will work in Cloud9
+kubectl port-forward deployment/streamlit-app 8501:8501 --address 0.0.0.0
+
+# Minikube service <service name>
+minikube service <service name>
+
+# To create namespace
+kubectl create namespace <name space>
+# -n <namespace>
+
+# To delete deployments and services
+kubectl delete deployment <deployment name>
+kubectl delete service <service name>
+
+# To watch it
+watch kubectl get all
+```
+
+10. Use ArgoCD for Continuous Delivery
+
+```sh
+# Scripts for ArgoCD
+
+# Start minikube
+# minikube start 
+
+# Install ArgoCD
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Verify the ArgoCD pods
+kubectl get pods -n argocd
+
+# Use port-forward to make it works in Cloud9
+kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0
+
+# Open web browser
+<localhost | ip address>:8080 
+
+# Login
+Username: admin
+Password: argocd-server-xxxxx-xxxx (ArgoCD Server Pod)
+# or
+ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+echo $ARGOCD_PASSWORD 
+
+# Create namespace for streamlit-app
+kubectl create namespace streamlit-app
+# watch
+watch kubectl get all -n streamlit-app
+
+# In web UI
+# New App button
+    # Application Name: streamlit-app
+    # Project: default
+    # Sync Policy: Automatic
+    # Repository: Git repository
+    # Revision: Git branch, tag, commit 
+    # Path: Where Kubernetes manifests are stored (./) but if I use Deployment folder (Deployment)
+    # Destination Cluster URL: https://kubernetes.default.svc
+		# Namespace: streamlit-app
+		# [Cluster: minikube]
+# Create
+
+# View in App web UI
+# Check the namespace streamlit-app
+kubectl get all -n streamlit-app
+
+# Port Forwarding for the App, use the Docker Port, this will work in Cloud9
+kubectl port-forward deployment/streamlit-app 8501:8501 -n streamlit-app --address 0.0.0.0
+# Open Browser <localhost | ip address>:8501
+
+---
+# To delete ArgoCD 
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
 
