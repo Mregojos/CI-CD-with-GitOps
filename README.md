@@ -7,8 +7,8 @@
 
 
 ## Objective
-* To containerize the app and push it to docker repository
-* To deploy the app using container orchestration
+* To containerize the web app and push it to docker repository
+* To deploy the containerized web app using container orchestration
 * To build CI/CD Pipelines
 
 
