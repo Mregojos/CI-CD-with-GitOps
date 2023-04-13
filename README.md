@@ -293,17 +293,6 @@ jobs:
 
 ```
 
-```sh
-# Git File System
-#.github/workflows/main.yaml
-# Aplication/<files here>
-# Deployment/<files here>
-# Change CD PATH from ./ to Deployment
-
-# GitHub Actions to edit Deployment.yaml from GitHub Repository
-# Add step to edit Deployment.yaml from the same GitHub Repository (only use sed)
-```
-
 13. For GitHub Webhooks 
 
 ```sh
