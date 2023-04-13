@@ -1,1 +1,51 @@
+name: Build and Push Docker Image
+on:
+    push:
+        branches:
+            - main
+				paths:
+						- 'Application/**'
+    pull_request:
+        branches:
+            - main
+				paths:
+						- 'Application/**'
+jobs:
+    build-and-push:
+				runs-on: ubuntu-latest
+        
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+					with:
+						token: ${{ secrets.GH_PAT }}
+          
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v1
+          with:
+              username: ${{ secrets.DOCKER_HUB_USERNAME }}
+              password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        
+        - name: Build and push Docker image
+          uses: docker/build-push-action@v2
+          with:
+              context: Application # Application Folder (Use . if not in folder)
+              push: ${{ github.event_name != 'pull_request' }}
+              tags: |
+                ${{ secrets.DOCKER_APP_REPO }}:${{ github.sha }}
+                ${{ secrets.DOCKER_APP_REPO }}:latest
 
+        - name: Edit Deployment/deployment.yaml
+					run: |
+						sed -i 's|image:.*|image: ${{ secrets.DOCKER_APP_REPO }}:${{ github.sha }}|' Deployment/deployment.yaml
+
+				- name: Configure Git
+          run: |
+            git config --global user.email "matt"
+            git config --global user.name "mregojos"
+        
+        - name: Commit and push changes
+          run: |
+            git add Deployment/deployment.yaml
+            git commit -m "Update Deployment/deployment.yaml with new image tag"
+            git push
