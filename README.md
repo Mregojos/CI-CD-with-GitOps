@@ -21,7 +21,7 @@
 * I will be using Amazon EC2 Ubuntu Linux
 * Spec: t3.medium, 4GB RAM, 2CPUs, 30 GB RAM
 
-4. Install Miinikube and Kubectl
+3. Download and Install Minikube and Kubectl
 * Minikube is used to create a cluster on a local computer. It is also used for development purposes only.
 
 ```sh
@@ -54,21 +54,20 @@ sudo mv minikube /usr/local/bin/
 # kubectl get nodes
 ```
 
-5. Test the app locally
+4. Test the app locally
 
 ```sh
 docker build -t streamlit-app .
 docker run --name streamlit-app -p 8501:8501 streamlit-app
-docker images
 
-# For interactive terminal
-docker exec -it streamlit-app sh
+# List docker images
+docker images
 
 # Check the app
 # http://<ip address>:8501
 ```
 
-6. Push the image to Docker Hub Registry
+5. Push the image to Docker Hub Registry
 
 ```sh
 # To push the image to docker hub
@@ -96,7 +95,7 @@ minikube start
 [deployment.yaml](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/Deployment/deployment.yaml)
 
 
-9. Starts Kubernetes (local without ArgoCD)
+9. Start Kubernetes (local without ArgoCD)
 
 ```sh
 # Start minikube if not started yet
@@ -110,21 +109,21 @@ kubectl get pods
 kubectl get nodes
 kubectl get all
 
-minikube service streamlit-app-service --url
-kubectl get nodes -o wide
-minikube ip
-
-minikube stop
-minikube delete
-
-# Port Forwarding use the Docker Port, this will work in codespace
-# kubectl port-forward deployment/streamlit-app 8501:8501
-
 # Port Forwarding use the Docker Port, this will work in Cloud9
 kubectl port-forward deployment/streamlit-app 8501:8501 --address 0.0.0.0
 
-# Minikube service <service name>
+
+
+#----------------Some useful commands-------------------#
+kubectl get nodes -o wide
+
+minikube service streamlit-app-service --url
 minikube service <service name>
+minikube ip
+
+# To stop and delete minikube
+# minikube stop
+# minikube delete
 
 # To create namespace
 kubectl create namespace <name space>
@@ -134,7 +133,7 @@ kubectl create namespace <name space>
 kubectl delete deployment <deployment name>
 kubectl delete service <service name>
 
-# To watch it
+# To watch it 
 watch kubectl get all
 ```
 
@@ -143,7 +142,7 @@ watch kubectl get all
 ```sh
 # Scripts for ArgoCD
 
-# Start minikube
+# Start minikube if not started yet
 # minikube start 
 
 # Install ArgoCD
@@ -153,7 +152,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 # Verify the ArgoCD pods
 kubectl get pods -n argocd
 
-# Use port-forward to make it works in Cloud9
+# Use port-forward to open ArgoCD Web UI
 kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0
 
 # Open web browser
@@ -162,7 +161,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0
 # Login
 Username: admin
 Password: argocd-server-xxxxx-xxxx (ArgoCD Server Pod)
-# or
+# or get the ArgoCD Password
 ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo $ARGOCD_PASSWORD 
 
@@ -171,7 +170,7 @@ kubectl create namespace streamlit-app
 # watch
 watch kubectl get all -n streamlit-app
 
-# In web UI
+# In ArgoCD web UI
 # New App button
     # Application Name: streamlit-app
     # Project: default
@@ -184,7 +183,7 @@ watch kubectl get all -n streamlit-app
 		# [Cluster: minikube]
 # Create
 
-# View in App web UI
+# View in Web UI
 # Check the namespace streamlit-app
 kubectl get all -n streamlit-app
 
@@ -192,12 +191,13 @@ kubectl get all -n streamlit-app
 kubectl port-forward deployment/streamlit-app 8501:8501 -n streamlit-app --address 0.0.0.0
 # Open Browser <localhost | ip address>:8501
 
----
+#------------To delete ArgoCD-----------------#
 # To delete ArgoCD 
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
 11. (Optional) Use Kustomize Package Manager
+* Kustomize Package Manager is a great tool to organize your manifests.
 
 ```sh
 # For Kustomize (Package Manager)
@@ -225,20 +225,25 @@ resources:
 # Apply
 kubectl kustomize kustomize/overlay | jubectl apply -f -
 ```
+
 12. GitHub Actions
 
 ```sh
-# GitHub Actions For Building Dockerfile from GitHub Repository and Puching Image to Docker Hub
-# Setup Secrets (Actions)
-# DOCKER_APP_REPO: mattregojos/streamlit-app
-# DOCKER_HUB_USERNAME: mattregojos
-# DOCKER_HUB_PASSWORD: <my password in Docker Hub>
-# GH_PAT: <Create Token>
+# GitHub Actions For Building Dockerfile from GitHub Repository and Pushing the Image to Docker Hub
+
+# Create Secrets (Actions)
+DOCKER_APP_REPO: <Docker Hub ID>/streamlit-app
+DOCKER_HUB_USERNAME: <Username>
+DOCKER_HUB_PASSWORD: <Password>
+
+# Create a GitHub Token and ad this to secret
+GH_PAT: <GitHub Token>
+
 # Add a file: .github/workflows/main.yaml
-name: Build and Push Docker Image
 ```
 
 ```sh
+name: GitOps Workflow
 on:
     push:
         branches:
@@ -296,12 +301,13 @@ jobs:
 13. For GitHub Webhooks 
 
 ```sh
-# For GitHub Action
+# For GitHub Action to connect directly to ArgoCd we can use Webhooks
+
 # Github Webhook IP for security Group
 
 # In Amazon EC2 security group
-# Change the security group
-# Add Ingress
+# Change the security group of the EC2
+# Edit inbound and add this
 # Source: 140.82.112.0/20
 # Type: Custom TCP
 # Port 8080
@@ -313,16 +319,9 @@ jobs:
 # Create WebHooks
 
 # Try to change the deployment.yaml (change replicas to 3)
-# See the ArgoCD Web UI App (It's changed)
+# See the ArgoCD Web UI App 
 ```
 
+14. <The App has successfully deployed!>
 
-
-
-
-
-
-
-
-
-
+15. Clean-up
