@@ -4,7 +4,7 @@
 
 
 ## Tech Stack
-* GitHub, Amazon EC2, Docker, Docker Hub, Kubernetes, Minikube, GitHub Actions, ArgoCD 
+* GitHub, Amazon EC2, Python, Streamlit, Docker, Docker Hub, Kubernetes, Minikube, GitHub Actions, ArgoCD 
 
 ## Objective
 * To containerize the web app and push it to docker repository
