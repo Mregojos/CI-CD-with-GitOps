@@ -17,4 +17,36 @@
 * The app is a simple data analysis web app
 * App Code Source: [Link](https://github.com/mregojos/data-analysis-app)
 
-2. Push the app to docker registry
+2. Provision Amazon EC2 on Cloud9
+* I will be using Amazon EC2 Ubuntu Linux
+* Spec: t3.medium, 4GB RAM, 2CPUs, 30 GB RAM
+
+4. Install Miinikube and Kubectl
+* Minikube is used to create a cluster on a local computer. It is also used for development purposes only.
+```sh
+
+```
+
+5. Test the app locally
+``sh
+
+``
+
+6. Push the image to Docker Hub Registry
+``sh
+
+```
+
+7. Start Minikube
+```sh
+
+```
+
+8. Create a deployment.yaml file
+[deployment.yaml](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/Deployment/deployment.yaml)
+
+
+
+
+
+
