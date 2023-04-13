@@ -1,10 +1,10 @@
-# CI/CD with GitOps
+# CI/CD with GitOps (GitHub Actions and ArgoCD)
 
 ## Architecture
 
 
 ## Tech Stack
-
+* GitHub, Amazon EC2, Docker, Docker Hub, Kubernetes, Minikube, GitHub Actions, ArgoCD 
 
 ## Objective
 * To containerize the web app and push it to docker repository
