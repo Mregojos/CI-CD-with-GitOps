@@ -4,7 +4,7 @@
 
 
 ## Tech Stack
-* GitHub, Amazon EC2, Python, Streamlit, Docker, Docker Hub, Kubernetes, Minikube, GitHub Actions, ArgoCD 
+* GitHub, Amazon EC2, Cloud9, Python, Streamlit, Docker, Docker Hub, Kubernetes, Minikube, GitHub Actions, ArgoCD 
 
 ## Objective
 * To containerize the web app and push it to docker repository
@@ -196,5 +196,144 @@ kubectl port-forward deployment/streamlit-app 8501:8501 -n streamlit-app --addre
 # To delete ArgoCD 
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
+
+11. (Optional) Use Kustomize Package Manager
+
+```sh
+# For Kustomize (Package Manager)
+mkdir -p kustomize/base
+mkdir -p kustomize/overlay
+
+# same as deployment.yaml
+touch kustomize/base/deployment.yaml
+
+# kustomize/base/kustomization.yaml
+touch kustomize/base/kustomizaton.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+
+# kustomize/overlay/kustomizaton.yaml
+touch kustomize/overlay/kustomizaton.yaml
+# kustomize/overlaykustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base
+
+# Apply
+kubectl kustomize kustomize/overlay | jubectl apply -f -
+```
+12. GitHub Actions
+
+```sh
+# GitHub Actions For Building Dockerfile from GitHub Repository and Puching Image to Docker Hub
+# Setup Secrets (Actions)
+# DOCKER_APP_REPO: mattregojos/streamlit-app
+# DOCKER_HUB_USERNAME: mattregojos
+# DOCKER_HUB_PASSWORD: <my password in Docker Hub>
+# GH_PAT: <Create Token>
+# Add a file: .github/workflows/main.yaml
+name: Build and Push Docker Image
+```
+
+```sh
+on:
+    push:
+        branches:
+            - main
+	paths:
+	    - 'Application/**'
+    pull_request:
+        branches:
+            - main
+	paths:
+	    - 'Application/**'
+	    
+jobs:
+    build-and-push:
+	runs-on: ubuntu-latest
+        
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+	  with:
+	      token: ${{ secrets.GH_PAT }}
+          
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v1
+          with:
+              username: ${{ secrets.DOCKER_HUB_USERNAME }}
+              password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        
+        - name: Build and push Docker image
+          uses: docker/build-push-action@v2
+          with:
+              context: Application # Application Folder (Use . if not in folder)
+              push: ${{ github.event_name != 'pull_request' }}
+              tags: |
+                ${{ secrets.DOCKER_APP_REPO }}:${{ github.sha }}
+                ${{ secrets.DOCKER_APP_REPO }}:latest
+
+        - name: Edit Deployment/deployment.yaml
+	  run: |
+	     sed -i 's|image:.*|image: ${{ secrets.DOCKER_APP_REPO }}:${{ github.sha }}|' Deployment/deployment.yaml
+
+	- name: Configure Git
+          run: |
+            git config --global user.email "matt"
+            git config --global user.name "mregojos"
+        
+        - name: Commit and push changes
+          run: |
+            git add Deployment/deployment.yaml
+            git commit -m "Update Deployment/deployment.yaml with new image tag"
+            git push
+
+```
+
+```sh
+# Git File System
+#.github/workflows/main.yaml
+# Aplication/<files here>
+# Deployment/<files here>
+# Change CD PATH from ./ to Deployment
+
+# GitHub Actions to edit Deployment.yaml from GitHub Repository
+# Add step to edit Deployment.yaml from the same GitHub Repository (only use sed)
+```
+
+13. For GitHub Webhooks 
+
+```sh
+# For GitHub Action
+# Github Webhook IP for security Group
+
+# In Amazon EC2 security group
+# Change the security group
+# Add Ingress
+# Source: 140.82.112.0/20
+# Type: Custom TCP
+# Port 8080
+
+# Go to GitHub Repo and add webhooks
+# Webhooks
+# https://<ip-address>:8080/api/webhook
+# SSL Verification: Disable
+# Create WebHooks
+
+# Try to change the deployment.yaml (change replicas to 3)
+# See the ArgoCD Web UI App (It's changed)
+```
+
+
+
+
+
+
+
+
+
 
 
