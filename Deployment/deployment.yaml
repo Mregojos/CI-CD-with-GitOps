@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: streamlit-app
-        image: <Docker Hub ID>/streamlit-app:latest
+        image: mattregojos/streamlit-app:latest
         ports:
         - name: streamlit
           containerPort: 8501
