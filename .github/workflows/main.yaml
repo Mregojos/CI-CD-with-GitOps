@@ -2,15 +2,15 @@ name: GitOps Workflow
 on:
 	push:
 		branches:
-			- main
+		- main
 		paths:
-			- 'Application/**'
+		- 'Application/**'
 
 	pull_request:
 		branches:
-			- main
+		- main
 		paths:
-			- 'Application/**'
+		- 'Application/**'
 	    
 jobs:
     build-and-push:
@@ -38,11 +38,11 @@ jobs:
                 ${{ secrets.DOCKER_APP_REPO }}:latest
 
         - name: Edit Deployment/deployment.yaml
-	  run: |
-	      sed -i 's|image:.*|image: ${{ secrets.DOCKER_APP_REPO }}:${{ github.sha }}|' Deployment/deployment.yaml
+	  	  run: |
+	      	sed -i 's|image:.*|image: ${{ secrets.DOCKER_APP_REPO }}:${{ github.sha }}|' Deployment/deployment.yaml
 
-	 - name: Configure Git
-           run: |
+	 	- name: Configure Git
+          run: |
               git config --global user.email "matt"
               git config --global user.name "mregojos"
         
