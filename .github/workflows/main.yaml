@@ -6,7 +6,7 @@ on:
 	paths:
 	- 'Application/**'
     pull_request:
-        branches:
+	branches:
 	- main
 	paths:
 	- 'Application/**'
