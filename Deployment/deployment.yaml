@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: streamlit-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: streamlit-app
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: streamlit-app
-        image: mattregojos/streamlit-app:latest
+        image: <Docker Hub Username>/streamlit-app:latest
         ports:
         - name: streamlit
           containerPort: 8501
