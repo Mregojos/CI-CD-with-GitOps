@@ -3,14 +3,14 @@ on:
     push:
         branches:
             - main
-	paths:
-	    - 'Application/**'
+        paths:
+            - 'Application/**'
 
     pull_request:
-	 branches:
-	     - main
-	 paths:
-	     - 'Application/**'
+        branches:
+            - main
+        paths:
+            - 'Application/**'
 	    
 jobs:
     build-and-push:
