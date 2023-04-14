@@ -206,6 +206,7 @@ kubectl port-forward deployment/streamlit-app 8501:8501 -n streamlit-app --addre
 # To delete ArgoCD 
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
+![Argo App](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/images/Argo%20App.png)
 
 11. (Optional) Use Kustomize Package Manager
 * Kustomize Package Manager is a great tool to organize your manifests.
@@ -252,6 +253,7 @@ GH_PAT: <GitHub Token>
 
 # Add a file: .github/workflows/main.yaml
 ```
+![GitHub Secrets](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/images/GitHub%20Secrets.png)
 
 [main.yaml](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/.github/workflows/main.yaml)
 
@@ -336,6 +338,7 @@ jobs:
 # Try to change the deployment.yaml (change replicas to 3)
 # See the ArgoCD Web UI App 
 ```
+![ArgoCD App Deploymnet](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/images/ArgoCD%20App%20Deployment.png)
 
 14. The App has successfully deployed!
 
