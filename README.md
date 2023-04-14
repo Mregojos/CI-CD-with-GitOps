@@ -18,8 +18,7 @@
 * App Code Source: [Link](https://github.com/mregojos/data-analysis-app)
 
 2. Provision Amazon EC2 on Cloud9
-* I will be using Amazon EC2 Ubuntu Linux
-* Spec: t3.medium, 4GB RAM, 2CPUs, 30 GB RAM
+* Spec: Amazon EC2 Ubuntu Linux, t3.large, 8GB RAM, 2CPUs, 30 GB RAM
 
 3. Download and Install Minikube and Kubectl
 * Minikube is used to create a cluster on a local computer. It is also used for development purposes only.
