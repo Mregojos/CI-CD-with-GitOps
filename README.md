@@ -13,14 +13,22 @@
 
 
 ## Tasks
-1. Web Application
+0. Prerequisites
+* Python and Docker
+
+```sh
+# Clone the repository
+git clone https://github.com/Mregojos/CI-CD-with-GitOps
+```
+
+2. Web Application
 * The app is a simple data analysis web app
 * App Code Source: [Link](https://github.com/mregojos/data-analysis-app)
 
-2. Provision Amazon EC2 on Cloud9
+2. (Optional) Provision Amazon EC2 on Cloud9
 * Spec: Amazon EC2 Ubuntu Linux, t3.large, 8GB RAM, 2CPUs, 30 GB RAM
 
-3. Download and Install Minikube and Kubectl
+3. Download and Install Minikube and Kubectl (if not already installed)
 * Minikube is used to create a cluster on a local computer. It is also used for development purposes only.
 
 ```sh
@@ -56,6 +64,7 @@ sudo mv minikube /usr/local/bin/
 4. Test the app locally
 
 ```sh
+cd Application
 docker build -t streamlit-app .
 docker run --name streamlit-app -p 8501:8501 streamlit-app
 
