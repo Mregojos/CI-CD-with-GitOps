@@ -1,16 +1,16 @@
 name: GitOps Workflow
 on:
-	push:
-		branches:
-		 - main
-		paths:
-		 - 'Application/**'
+    push:
+	branches:
+	 - main
+	paths:
+	 - 'Application/**'
 
-	pull_request:
-		branches:
-		 - main
-		paths:
-		 - 'Application/**'
+    pull_request:
+	branches:
+	 - main
+	paths:
+	 - 'Application/**'
 	    
 jobs:
     build-and-push:
