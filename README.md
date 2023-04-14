@@ -253,6 +253,8 @@ GH_PAT: <GitHub Token>
 # Add a file: .github/workflows/main.yaml
 ```
 
+[main.yaml](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/.github/workflows/main.yaml)
+
 ```sh
 name: GitOps Workflow
 on:
