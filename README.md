@@ -110,6 +110,8 @@ minikube start
 # Start minikube if not started yet
 minikube start
 
+# Deployment Folder
+# cd Deployment
 kubectl apply -f deployment.yaml
 kubectl get deployments
 kubectl get services
