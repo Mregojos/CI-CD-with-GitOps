@@ -1,7 +1,7 @@
 # CI/CD with GitOps (GitHub Actions and ArgoCD)
 
 ## Architecture
-
+![Diagram](https://github.com/Mregojos/CI-CD-with-GitOps/blob/main/images/Diagram.png)
 
 ## Tech Stack
 * GitHub, Amazon EC2, Cloud9, Python, Streamlit, Docker, Docker Hub, Kubernetes, Minikube, GitHub Actions, ArgoCD 
