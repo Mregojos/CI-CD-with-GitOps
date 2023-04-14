@@ -337,6 +337,6 @@ jobs:
 # See the ArgoCD Web UI App 
 ```
 
-14. <The App has successfully deployed!>
+14. The App has successfully deployed!
 
 15. Clean-up
