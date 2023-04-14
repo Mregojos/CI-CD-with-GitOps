@@ -21,7 +21,7 @@
 git clone https://github.com/Mregojos/CI-CD-with-GitOps
 ```
 
-2. Web Application
+1. Web Application
 * The app is a simple data analysis web app
 * App Code Source: [Link](https://github.com/mregojos/data-analysis-app)
 
