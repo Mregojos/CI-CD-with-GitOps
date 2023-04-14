@@ -84,6 +84,7 @@ docker images
 # docker logout
 docker login
 # Login your credentials
+cd Application
 docker build -t streamlit-app .
 docker tag streamlit-app <Docker Hub ID>/streamlit-app:latest
 docker push <Docker Hub ID>/streamlit-app:latest
